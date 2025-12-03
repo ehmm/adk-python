@@ -25,6 +25,7 @@ from typing import Optional
 from typing import TYPE_CHECKING
 from typing import Union
 
+import google.auth.credentials
 from google.genai import types
 from google.genai.errors import ClientError
 from typing_extensions import override
@@ -86,6 +87,13 @@ class Gemini(BaseLlm):
   """
 
   model: str = 'gemini-2.5-flash'
+
+  vertexai: Optional[bool] = None
+  api_key: Optional[str] = None
+  credentials: Optional[google.auth.credentials.Credentials] = None
+  project: Optional[str] = None
+  location: Optional[str] = None
+  debug_config: Optional[types.DebugConfig] = None
 
   speech_config: Optional[types.SpeechConfig] = None
 
@@ -241,6 +249,12 @@ class Gemini(BaseLlm):
     from google.genai import Client
 
     return Client(
+        vertexai=self.vertexai,
+        api_key=self.api_key,
+        credentials=self.credentials,
+        project=self.project,
+        location=self.location,
+        debug_config=self.debug_config,
         http_options=types.HttpOptions(
             headers=self._tracking_headers(),
             retry_options=self.retry_options,
@@ -278,6 +292,12 @@ class Gemini(BaseLlm):
     from google.genai import Client
 
     return Client(
+        vertexai=self.vertexai,
+        api_key=self.api_key,
+        credentials=self.credentials,
+        project=self.project,
+        location=self.location,
+        debug_config=self.debug_config,
         http_options=types.HttpOptions(
             headers=self._tracking_headers(), api_version=self._live_api_version
         )
